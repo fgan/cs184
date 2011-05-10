@@ -1,0 +1,30 @@
+Byoungseok Peter Kim
+cs184-bg
+20190251
+
+Frank Yu Gan
+cs184-ay
+20448257
+
+Project Proposal
+
+Goal: To model a lens assembly of a real camera.
+
+Features:
+
+-Focal Length: A lens' focal length determines the magnification of the image projected onto the image plane (mostly for disant objects). Depending on the focal length, the distance between the lens and the film, and the distance between the lens and the object being focused, certain parts of the image may be sharper and other parts blurry. Having a controller for the focal length allows us to model a camera with zoom. The implementation of focal length and focus involves mathematics of optics and ray tracing.
+
+-Aperture: Aperture determines the light intensity of the image. A real camera lens has a simple mechanism to control the size of the aperture. This feature can be implemented in a number of ways, the simplest of which is to have a multiplier to the final image intensity to model aperture.
+
+Possible Extra Features:
+
+-Wide-angle: A "normal" lens is defined as one for which the focal length is approximately equal to the diagonal of the film. A wide angle lens is when the focal length is shorter than the diagonal. The "fisheye" lens is a special wide-angle lens for which the focal length is shorter than the short side of the film.
+
+-Long Focus: Opposite of wide-angle, long focus lenses have focal lengths that are longer than the diagonal of the film. As a result, distant objects become much more magnified than normal.
+
+-Lens Flare: Unwanted scattering of light causing poor color quality and/or artifacts in the image.
+
+-Soft Focus: A soft focus lens blurs the image while still maintaining sharp edges.
+
+***A lot of the information about each feature was found on wikipedia (some are
+directly quoted and others paraphrased).***

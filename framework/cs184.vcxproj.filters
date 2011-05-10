@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\UCB">
+      <UniqueIdentifier>{e79bdc91-d637-40cf-a229-9bc80144ac1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\algebra">
+      <UniqueIdentifier>{033d4f68-9d9a-40d9-ad8d-58d79e1173a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\UCB">
+      <UniqueIdentifier>{1cf95719-86ab-4823-b86e-382a4533589e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Film.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primitives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\mathexpr.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\MeshInfo.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\ParametricValue.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\Scene.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\SceneData.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\SceneGroup.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\SceneInfo.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\SceneInstance.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\SceneLoader.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UCB\UCBglobal.h">
+      <Filter>Header Files\UCB</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algebra3.h">
+      <Filter>Header Files\algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoundingBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Film.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitives.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\mathexpr.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\MeshInfo.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\Scene.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\SceneGroup.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\SceneInstance.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UCB\SceneLoader.cpp">
+      <Filter>Source Files\UCB</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BoundingBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\index.html" />
+    <None Include="doc\OBJfiles.html" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+Byoungseok Peter Kim
+cs184-bg
+20190251
+
+Frank Yu Gan
+cs184-ay
+20448257
+
+Camera Modeling
+
+
+Challenges:
+
+Lens modeling - Upon coding our project, we found that the lens modeling and aperture were tied closely together, and involved difficulties beyond what we initially expected. We originally believed the challenge of lens modeling would only be ordering and creating the spheres that represent the lens, along with the refraction that is necessary to warp rays through them. We addressed this by constructing a new class to properly abstract warping the ray from the image plane to object space. Bar any coding errors, this portion of the challenge is 100% complete. However, two further challenges arose once we began to actually code. They are:
+a. Finding the direction of the rays to shoot from the image plane. Since they are warped by the lens, it's difficult to tell where they will end up. Our solution to this was to use an algorithm similar to binary search that shoots different rays until we have one that goes through the aperture. It's probably possible to come up with a more efficient algorithm for this (perhaps some kind of formula), which we may consider if we find rendering is too slow. Since we may need to revise our formula, this challenge is perhaps 70% done.
+b. Modeling the size of the camera itself in worldspace. This was a challenge because if our camera model was too large, then our model will basically be a model of an oversize camera taking pictures of tiny cubes, whereas if it was too small, our model would be of a tiny camera taking pictures of gigantic cubes. We addressed this by choosing assigning each unit in worldspace a value of 1 decimeter. The view angle of the camera is also different from that of the raytracer we built in class, which we will also need to address by modifying our image file and our old raytracer so we can properly compare images. I believe this challenge has been addressed 60%.
+
+Aperture - We originally thought aperture was a component we could separate from the lens modeling itself, but this proved to be untrue. What we've done at the moment is force a fixed aperture (which is set to be very small) so that only the ray that passes through the exact middle of the aperture goes through; this ray is determined by our algorithm that finds the directions the rays shoot in. Since we have yet to support arbitrary apertures nor support multiple rays going through the aperture, we are probably 20% or so done with this challenge.
+
+Focal Length - Integrating focal length is simply a matter of scaling the distance between the lens components by a certain amount. None of our code is written in a way that would break it if we changed the distance between lens, so though we have coded 0% of the code that would support a user-defined focal length, I believe we have solved it 80% (leaving 20% in case of oversight).
+
+Our image is camera_checkpoint1.bmp. It shows a picture of our scene of cubes raytraced through our lens modeling system (upside down because of the nature of camera raytracing versus the raytracing we've used before - we need to fix this). The cubes look like rectangular prisms because the "film" is set to be 24mm x 36mm, but the image was captured in a square.
