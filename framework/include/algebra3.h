@@ -432,6 +432,7 @@ public:
     Ray();
     Ray(vec4 & start, vec4 & end, double min_t);
     Ray(const Ray & r);
+	Ray(double min_t, vec4 & start, vec4 & dir);
 
     //special functions
 
@@ -1557,6 +1558,12 @@ inline Ray::Ray(const Ray & r) {
     _e = r._e;
     _d = r._d;
     _min_t = r._min_t;
+}
+
+inline Ray::Ray(double min_t, vec4 & start, vec4 & dir) {
+	_e = start;
+	_d = dir;
+	_min_t = min_t;
 }
 
 //special functions

@@ -4,7 +4,7 @@
 Lens::Lens() {
 
 	initializeLens();
-	//_apertureRadius = .342;
+	_apertureRadius = .342;
 
 }
 
@@ -43,7 +43,7 @@ bool Lens::traceFirstHalf(Ray & r, Ray & exitRay, vec2 & offset) {
 	double oldIndex = 1.0;
 	bool isSuccess = true;
 
-	for(int i=0; i<5; i++) {
+	for(int i=0; i<_lens_halfway; i++) {
 
 		double intersect = lens->intersect(traceray);
 		if(intersect < numeric_limits<double>::infinity()) {
@@ -69,8 +69,8 @@ bool Lens::traceFirstHalf(Ray & r, Ray & exitRay, vec2 & offset) {
 	double xoffset = exitRayPosition[VX];
 	double yoffset = exitRayPosition[VY];
 
-//	if(xoffset * xoffset + yoffset * yoffset <= _apertureRadius * _apertureRadius)
-	if(xoffset * xoffset + yoffset * yoffset > .342 * .342) {
+	if(xoffset * xoffset + yoffset * yoffset > _apertureRadius * _apertureRadius) {
+	//if(xoffset * xoffset + yoffset * yoffset > .342 * .342) {
 		isSuccess = false;
 	}
 	offset = vec2(xoffset,yoffset);
@@ -109,40 +109,99 @@ bool Lens::refractRay(Ray & r, vec3 normal, double n1, double n2, vec4 pos) {
 
 }
 
-bool Lens::raytrace(Ray & r, Ray & exitRay) {
+bool Lens::raytrace(Ray & r, Ray & exitRay, vector<Ray> & exitRays) {
 
+	if(_part1) {
+		Ray tempRay = r;
+		double oldIndex = 1.0;
+		for(vector<Sphere>::iterator lens = _lens.begin(); lens != _lens.end(); lens++) {
 
-	//assumes parameter ray can go through aperture
+			double intersect = lens->intersect(tempRay);
+			if(intersect < numeric_limits<double>::infinity()) {
+				vec4 pos = tempRay.getPos(intersect);
+				vec3 normal = vec3(lens->calculateNormal(pos), VW);
+				double newIndex = lens->getRefractiveIndex();
+				if(refractRay(tempRay, normal, oldIndex, newIndex, pos)) {
+					oldIndex = newIndex;
+				}
 
-	Ray tempRay = r;
-	double oldIndex = 1.0;
-	for(vector<Sphere>::iterator lens = _lens.begin(); lens != _lens.end(); lens++) {
-
-		double intersect = lens->intersect(tempRay);
-		if(intersect < numeric_limits<double>::infinity()) {
-			vec4 pos = tempRay.getPos(intersect);
-			vec3 normal = vec3(lens->calculateNormal(pos), VW);
-			double newIndex = lens->getRefractiveIndex();
-			if(refractRay(tempRay, normal, oldIndex, newIndex, pos)) {
-				oldIndex = newIndex;
-			}
+				else
+					return false;
+				}
 
 			else
-				return false;
-			}
+			return false;
 
-		else
-		return false;
+		}
 
+		exitRay = tempRay;
+
+		return true;
 	}
 
-	exitRay = tempRay;
+	else {
+		vector<Ray> halfRays, enterRays, finalRays;
+		Ray temp = r;
 
-	return true;
+		for(int h = -50; h <= 50; h++) {
+			for(int w = -50; w <= 50; w++) {
+				if(h!=0 && w!=0) {
+					Ray tempRay = Ray(temp.getMinT(), temp.start(), temp.direction()+vec4(0.01*h,0.01*w,0,0));
+					enterRays.push_back(tempRay);
+				}
+
+				else
+					enterRays.push_back(temp);
+			}
+		}
+
+		double oldIndex = 1.0;
+		
+		for(vector<Ray>::iterator ray = enterRays.begin(); ray != enterRays.end(); ray++) {
+			Ray dummyRay;
+			vec2 dummyVec;
+			Ray temp1 = *ray;
+			if(traceFirstHalf(temp1, dummyRay, dummyVec))
+				halfRays.push_back(dummyRay);
+		}
+
+		for(vector<Ray>::iterator ray = halfRays.begin(); ray != halfRays.end(); ray++) {
+
+			Ray temp1 = *ray;
+			for(vector<Sphere>::iterator lens = _lens.begin() + _lens_halfway; lens != _lens.end(); lens++) {
+
+				double intersect = lens->intersect(temp1);
+				if(intersect < numeric_limits<double>::infinity()) {
+					vec4 pos = temp1.getPos(intersect);
+					vec3 normal = vec3(lens->calculateNormal(pos), VW);
+					double newIndex = lens->getRefractiveIndex();
+					if(refractRay(temp1, normal, oldIndex, newIndex, pos)) {
+						oldIndex = newIndex;
+					}
+
+					else
+						break;
+				}
+
+				else
+					break;
+
+				if(lens+1 == _lens.end())
+					finalRays.push_back(temp1);
+			}
+		}
+
+		exitRays = finalRays;
+
+		if(finalRays.size() == 0)
+			return false;
+
+		return true;
+	}
 }
 
 
-Ray Lens::getRays(vec4 & point, Ray & r) {
+Ray Lens::getRay(vec4 & point, Ray & r) {
 	double epsilon = 0.01;
 	bool isFirstCheck = true;
 	vec2 nextDistance;
@@ -151,10 +210,11 @@ Ray Lens::getRays(vec4 & point, Ray & r) {
 	Ray upperRay, lowerRay;
 	vec2 upperDistance, lowerDistance;
 	vec4 upperRayOffset, lowerRayOffset;
+	vector<Ray> rays;
 
 	traceFirstHalf(nextRay, r, nextDistance);
 	if (nextDistance.length() < epsilon) {
-		raytrace(nextRay, r);
+		raytrace(nextRay, r, rays);
 		return r;
 	}
 
@@ -174,7 +234,7 @@ Ray Lens::getRays(vec4 & point, Ray & r) {
 		nextRay = Ray(point, nextOffset, 0.001);
 		traceFirstHalf(nextRay, r, nextDistance);
 		if (nextDistance.length() < epsilon) {
-			raytrace(nextRay, r);
+			raytrace(nextRay, r, rays);
 			return r;
 		}
 
@@ -204,8 +264,96 @@ Ray Lens::getRays(vec4 & point, Ray & r) {
 		nextRay = Ray(point, nextOffset, 0.001);
 		traceFirstHalf(nextRay, r, nextDistance);
 		if (nextDistance.length() < epsilon) {
-			raytrace(nextRay, r);
+			raytrace(nextRay, r, rays);
 			return r;
+		}
+
+		vec4 sumUpper = nextDistance + upperDistance;
+		if (sumUpper.length() > nextDistance.length() && sumUpper.length() > upperDistance.length()) {
+			if (nextDistance.length() > upperDistance.length()) {
+				cout << "error in search algorithm of getRays" << endl;
+			}
+			upperRay = nextRay;
+			upperDistance = nextDistance;
+			upperRayOffset = nextOffset;
+		} else {
+			if (nextDistance.length() > lowerDistance.length()) {
+				cout << "error in search algorithm of getRays" << endl;
+			}
+			lowerRay = nextRay;
+			lowerDistance = nextDistance;
+			lowerRayOffset = nextOffset;
+		}
+	}
+}
+
+
+
+vector<Ray> Lens::getRays(vec4 & point, vector<Ray> & rays) {
+	double epsilon = 0.01;
+	bool isFirstCheck = true;
+	vec2 nextDistance;
+	vec4 nextOffset = vec4(0.0, 0.0, 0.0, 0.0);
+	Ray nextRay = Ray(point, nextOffset, 0.001);
+	Ray upperRay, lowerRay;
+	vec2 upperDistance, lowerDistance;
+	vec4 upperRayOffset, lowerRayOffset;
+	Ray r;
+
+	traceFirstHalf(nextRay, r, nextDistance);
+	if (nextDistance.length() < epsilon) {
+		raytrace(nextRay, r, rays);
+		return rays;
+	}
+
+	upperRay = nextRay;
+	upperRayOffset = nextOffset;
+	upperDistance = nextDistance;
+	vec4 deltaOffset = vec4(upperDistance[0], upperDistance[1], 0.0, 0.0);
+	int counter = 0;
+
+	while (true) {
+		if (DEBUG_FLAG) {
+			counter++;
+			cout << counter << endl;
+		}
+
+		nextOffset = nextOffset - deltaOffset;
+		nextRay = Ray(point, nextOffset, 0.001);
+		traceFirstHalf(nextRay, r, nextDistance);
+		if (nextDistance.length() < epsilon) {
+			raytrace(nextRay, r, rays);
+			return rays;
+		}
+
+		vec4 sumDistance = nextDistance + upperDistance;
+		if (sumDistance.length() > nextDistance.length() && sumDistance.length() > upperDistance.length()) {
+			// still on the same side
+			if (nextDistance.length() > upperDistance.length()) {
+				// this should be an error
+				cout << "error in getRays algorithm" << endl;
+			} else {
+				upperRay = nextRay;
+				upperRayOffset = nextOffset;
+				upperDistance = nextDistance;
+			}
+		} else {
+			// on other side
+			lowerRay = nextRay;
+			lowerRayOffset = nextOffset;
+			lowerDistance = nextDistance;
+			break;
+		}
+	}
+
+	while (true) {
+		double pUpper = lowerDistance.length() / (upperDistance.length() + lowerDistance.length());
+		nextOffset = pUpper * upperRayOffset + (1.0 - pUpper) * lowerRayOffset;
+		nextRay = Ray(point, nextOffset, 0.001);
+		traceFirstHalf(nextRay, r, nextDistance);
+		if (nextDistance.length() < epsilon) {
+			raytrace(nextRay, r, rays);
+			return rays;
 		}
 
 		vec4 sumUpper = nextDistance + upperDistance;

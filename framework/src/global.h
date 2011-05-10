@@ -32,7 +32,7 @@
 #include "UCB/UCBglobal.h"
 #include "FreeImage.h"
 
-#define IMAGE_WIDTH 512
+#define IMAGE_WIDTH 768
 #define IMAGE_HEIGHT 512
 
 #endif /* GLOBAL_H_ */

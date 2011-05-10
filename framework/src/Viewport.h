@@ -33,6 +33,7 @@ public:
 	 * Returns false after returning all samples on the screen
      * */
     bool getSample(vec2 &p, Ray &r);
+	bool getSamples(vec2 &p, vector<Ray> &r);
 
 	inline int getW() { return _pixelsWide; }
 	inline int getH() { return _pixelsHigh; }

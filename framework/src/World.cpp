@@ -111,10 +111,10 @@ void World::loadScene(string filename) {
 							.5, .5, .3, 4, .5)));
 		*/
 
-		_cubes.push_back(Cube(vec4(-3.5,-3.5,-15.0,1.0), 1.5, MaterialInfo(vec3(.4, .5, .9), 
+		_cubes.push_back(Cube(vec4(-3.5,-3.5,-35.0,1.0), 1.5, MaterialInfo(vec3(.4, .5, .9), 
 							.1, .5, .5, 150, 1.0)));
 
-		_cubes.push_back(Cube(vec4(2.0, 1.5, -10,1.0), 1.5, MaterialInfo(vec3(.9, .4, .5),
+		_cubes.push_back(Cube(vec4(2.0, 1.5, -30,1.0), 1.5, MaterialInfo(vec3(.9, .4, .5),
 							.4, .2, .5, 20, 0.0)));
 
 		_cubes.push_back(Cube(vec4(-3.5,4,-120.0,1.0), 3, MaterialInfo(vec3(.5, .9, .4),

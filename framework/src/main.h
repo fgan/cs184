@@ -8,7 +8,7 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#define IMAGE_WIDTH 512
+#define IMAGE_WIDTH 768
 #define IMAGE_HEIGHT 512
 
 #include "global.h"

@@ -137,10 +137,14 @@ void display() {
 		film->clear();
 		Viewport &view = world->getViewport();
 		view.resetSampler();
-		vec2 point; Ray ray;
-		while(view.getSample(point, ray)) {
-			ray.transform(view.getViewToWorld());
-			vec3 c = raycast(ray, 0);
+		vec2 point; Ray ray; vector<Ray> rays;
+		while(view.getSamples(point, rays)) {
+			vec3 combinedColor = vec3(0.0);
+			for (vector<Ray>::iterator it=rays.begin(); it!=rays.end(); it++) {
+				it->transform(view.getViewToWorld());
+				combinedColor += raycast(*it, 0);
+			}
+			vec3 c = combinedColor / rays.size();
 			film->expose(c, point);
 		}
 		isDisplayCalculated = true;
